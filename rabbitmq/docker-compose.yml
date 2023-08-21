@@ -1,0 +1,34 @@
+version: "3.9"
+
+services:
+  rabbitmq:
+    image: rabbitmq:3.9.9-management-alpine
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    container_name: opstra-rabbit-instance
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq/mnesia
+      - ./utils:/app/utils
+      - ./setup_exchanges_queues.sh:/app/setup_exchanges_queues.sh
+      - ./wait-for-it.sh:/app/wait-for-it.sh
+    environment:
+      - HOSTNAME=rabbitmq
+      - RABBITMQ_NODENAME=rabbitmq
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=password
+    networks:
+      - opstra-network
+    command: >
+      sh -c "sleep 1 &&
+      chmod +x /app/setup_exchanges_queues.sh && chmod +x /app/wait-for-it.sh &&
+      /app/setup_exchanges_queues.sh & rabbitmq-server"
+
+volumes:
+  rabbitmq_data:
+
+networks:
+  opstra-network:
+    name: opstra-network
+    external: true

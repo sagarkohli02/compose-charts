@@ -1,0 +1,64 @@
+version: "3.8"
+
+services:
+  test-n1:
+    container_name: test-n1
+    image: nats:latest
+    entrypoint: /nats-server
+    restart: always
+    command: -c /config/n1.conf
+    networks:
+      - nats
+    ports:
+      - 4221:4221
+    volumes:
+      - data-n1:/data
+      - ./config:/config
+
+  test-n2:
+    container_name: test-n2
+    image: nats:latest
+    entrypoint: /nats-server
+    restart: always
+    command: -c /config/n2.conf
+    networks:
+      - nats
+    ports:
+      - 4222:4222
+    volumes:
+      - data-n2:/data
+      - ./config:/config
+
+  test-n3:
+    container_name: test-n3
+    image: nats:latest
+    entrypoint: /nats-server
+    restart: always
+    command: -c /config/n3.conf
+    networks:
+      - nats
+    ports:
+      - 4223:4223
+    volumes:
+      - data-n3:/data
+      - ./config:/config
+
+  cli:
+    container_name: client
+    # image: nats:2.9.19-alpine
+    image: synadia/nats-box:latest
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+    networks:
+      - nats
+    volumes:
+      - ./context:/root/.config/nats/context
+
+networks:
+  nats:
+    name: nats
+
+volumes:
+  data-n1:
+  data-n2:
+  data-n3:

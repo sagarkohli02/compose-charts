@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  mongodb:
+    image: mongo:6-jammy
+    restart: always
+    hostname: mongodb
+    ports:
+      - "27017:27017"
+    container_name: mongodb-container
+    volumes:
+      - dbdata6:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=user
+      - MONGO_INITDB_ROOT_PASSWORD=password
+      - MONGO_INITDB_DATABASE=admin
+      - PUID=1000
+      - PGID=1000
+    networks:
+      - opstra-network
+
+volumes:
+  dbdata6:
+
+networks:
+  opstra-network:
+    name: opstra-network
+    external: true

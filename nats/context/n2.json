@@ -1,0 +1,14 @@
+{
+  "description": "Nats N2 node",
+  "url": "test-n2:4222",
+  "user": "",
+  "password": "",
+  "creds": "",
+  "nkey": "",
+  "cert": "",
+  "key": "",
+  "ca": "",
+  "nsc": "",
+  "jetstream_api_prefix": "",
+  "jetstream_event_prefix": ""
+}
